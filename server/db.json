@@ -1,0 +1,54 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "author_picture": "https://img.freepik.com/free-photo/portrait-happy-asian-woman-smiling-posing-confident-cross-arms-chest-standing-against-studio-background_1258-89269.jpg?w=826&t=st=1698051188~exp=1698051788~hmac=10400db0d23ceee19bb3261433d68317f095bb191eb9af5a853a6e9f049b794b",
+      "author_full_name": "Jane Dae",
+      "author_username": "@jandae",
+      "posted_at": "2023-09-02",
+      "content": "Pernah ga ready?",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMlHD_OOEwBiyaikUiTb9EfPtWtmCkpcK4lg8-9ExODOII5pyGZs6tKosphr21bvJ4yCg&usqp=CAU",
+      "likes_count": 150,
+      "replies_count": 35,
+      "replies": {
+        "id": 1,
+        "author_picture": "https://img.freepik.com/free-photo/beautiful-brunette-young-asian-woman-shows-discount-store-banner-copy-space-smiles-gently-indicates-upwards-poses-against-beige-wall_273609-53862.jpg?w=740&t=st=1698053622~exp=1698054222~hmac=0aa4a4f619e708a178db400dbf97f8b5dc9380270cba30b382da2d4874209d79",
+        "author_full_name": "Lady Gaga",
+        "content": "Panas banget ya hari ini"
+      }
+    },
+    {
+      "id": 2,
+      "author_picture": "https://img.freepik.com/free-photo/beautiful-brunette-young-asian-woman-shows-discount-store-banner-copy-space-smiles-gently-indicates-upwards-poses-against-beige-wall_273609-53862.jpg?w=740&t=st=1698053622~exp=1698054222~hmac=0aa4a4f619e708a178db400dbf97f8b5dc9380270cba30b382da2d4874209d79",
+      "author_full_name": "Rebecca Eltra",
+      "author_username": "@rebeltra",
+      "posted_at": "2023-04-15",
+      "content": "Kenapa ya?",
+      "image": "https://img-cdn.medkomtek.com/JPCcDJDdI5sbc477t9itpqSbpvk=/730x411/smart/filters:quality(100):strip_icc():format(webp)/article/QGIVLCtlaBBDE7wDDutxl/original/021868600_1606130691-Kenapa-Anak-Lebih-Nyaman-Diajari-Orang-Lain-daripada-Orang-Tuanya-shutterstock_735187474.jpg",
+      "likes_count": 126,
+      "replies_count": 50
+    },
+    {
+      "id": 3,
+      "author_picture": "https://img.freepik.com/free-photo/image-confident-asian-woman-showing-thumb-up-approval-recommending-like-smth-good-standing-white-background_1258-88797.jpg?w=826&t=st=1698053653~exp=1698054253~hmac=35cdf87a338a5ba258fb5f85c830daced9cced7e3c21a1a2a21d023fd0727fa9",
+      "author_full_name": "Taylor Swift",
+      "author_username": "@taylor98",
+      "posted_at": "2023-07-14",
+      "content": "Panas banget ya hari ini",
+      "image": "https://assets.ayobandung.com/crop/0x0:0x0/750x500/webp/photo/2023/04/25/cuacapanas-700x465-2499066331.png",
+      "likes_count": 205,
+      "replies_count": 80
+    },
+    {
+      "id": 4,
+      "author_picture": "https://img.freepik.com/free-photo/beautiful-young-woman-showing-okay-sign-smiling-pleased-recommending-smth-approve-like-product-standing-yellow-tshirt-white-background_1258-88737.jpg?w=826&t=st=1698053673~exp=1698054273~hmac=2119ae079f4b60b1d1aed2b00d0bf15735187e3fc1f09346a30b0c478a42b5e0",
+      "author_full_name": "Lady Gaga",
+      "author_username": "@ladygaga",
+      "posted_at": "2023-11-05",
+      "content": "",
+      "image": "",
+      "likes_count": 287,
+      "replies_count": 25
+    }
+  ]
+}
