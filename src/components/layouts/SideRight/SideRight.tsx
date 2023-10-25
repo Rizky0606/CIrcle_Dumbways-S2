@@ -6,7 +6,7 @@ import SuggestedFollow from "../../SuggestedFollow/SuggestedFollow";
 
 const SideRight = () => {
   return (
-    <Box maxW="400px" width="100%" position={"fixed"}>
+    <Box width="100%">
       <Profile />
       <SuggestedFollow />
     </Box>

@@ -11,11 +11,11 @@ import {
 } from "@chakra-ui/react";
 const Profile = () => {
   return (
-    <Box p="20px" top="0" w="330px">
+    <Box m="30px" position={"fixed"}>
       <Card p="15px" bg="#262626" borderRadius="10px">
         <CardBody>
           <Box>
-            <Heading size="md" mb="15px" mt="5px" color="white">
+            <Heading size="md" mb="15px" color="white">
               My Profile
             </Heading>
             <Image

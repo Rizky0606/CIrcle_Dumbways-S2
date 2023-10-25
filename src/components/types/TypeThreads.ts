@@ -1,11 +1,21 @@
-export type DataPosts = {
+export type DataThreads = {
   id: number;
-  author_picture: string;
-  author_full_name: string;
-  author_username: string;
-  posted_at: string;
+  created_at: string;
   content: string;
   image: string;
-  likes_count: number;
-  replies_count: number;
+  userId: {
+    full_name: string;
+    username: string;
+    photo_profile: string;
+  };
+  likes: [
+    {
+      id: number;
+    }
+  ];
+  replies: [
+    {
+      id: number;
+    }
+  ];
 };

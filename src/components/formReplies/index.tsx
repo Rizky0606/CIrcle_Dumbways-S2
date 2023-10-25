@@ -1,8 +1,8 @@
-// import React from 'react'
-import { Box, Input, Image, Button } from "@chakra-ui/react";
+// import React from "react";
+import { Box, Image, Input, Button } from "@chakra-ui/react";
 import { BiSolidImageAdd } from "react-icons/bi";
 
-const FormThread = () => {
+const FormReplies = () => {
   return (
     <Box display="flex" width="100%" alignItems={"center"}>
       <Image
@@ -21,8 +21,8 @@ const FormThread = () => {
         width="80%"
         mx="20px"
         pl="10px"
-        height={"35px"}
-        borderRadius="7px"
+        // height={"35px"}
+        // borderRadius="7px"
         variant={"flushed"}
       />
       <BiSolidImageAdd size="35px" style={{ marginRight: "10px" }} />
@@ -39,4 +39,4 @@ const FormThread = () => {
   );
 };
 
-export default FormThread;
+export default FormReplies;

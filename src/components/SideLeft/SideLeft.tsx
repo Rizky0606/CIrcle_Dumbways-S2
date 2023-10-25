@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 
 const SideLeft = () => {
   return (
-    <Box position={"fixed"} top="0" maxW="300px" width="100%">
+    <Box position={"fixed"} top="0">
       <SimpleGrid p={5}>
         <Box>
           <Link to="/">
