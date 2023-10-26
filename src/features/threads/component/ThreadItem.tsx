@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Box, Image, Text, Divider } from "@chakra-ui/react";
-import { DataThreads } from "@/components/types/TypeThreads";
+import { DataThreads } from "@/types/TypeThreads";
 import { AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 
@@ -38,12 +38,14 @@ const ThreadItem: React.FC<ThreadItemsApi> = ({ api }) => {
                 <Text>{post.created_at}</Text>
               </Box>
               <Text ml="10px">{post.content}</Text>
-              <Image
-                src={post.image}
-                alt={post.content}
-                borderRadius={"10px"}
-                m="10px 0 0 10px"
-              />
+              {post.image && (
+                <Image
+                  src={post.image}
+                  alt={post.content}
+                  borderRadius={"10px"}
+                  m="10px 0 0 10px"
+                />
+              )}
               <Box display={"flex"} m="10px 0 0 10px" alignItems={"center"}>
                 <Box display={"flex"} alignItems={"center"}>
                   <Box

@@ -15,17 +15,7 @@ const DetailThreads = () => {
       // height={"100vh"}
     >
       <Box w="100%">
-        <Grid templateColumns="0.8fr 2fr 1.2fr" gap="3">
-          <GridItem w="200px">
-            <SideLeft />
-          </GridItem>
-          <GridItem w="100%">
-            <DetailThread />
-          </GridItem>
-          <GridItem w="100%">
-            <SideRight />
-          </GridItem>
-        </Grid>
+        <DetailThread />
       </Box>
     </Container>
   );
