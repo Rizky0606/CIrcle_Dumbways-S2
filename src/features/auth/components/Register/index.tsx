@@ -11,15 +11,18 @@ import {
   Button,
   Heading,
   Text,
-  // useColorModeValue,
-  //   Link,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useRegister } from "../../hooks/useRegister";
 const Register = () => {
-  const { showPassword, setShowPassword, form, handleChangeInputRegister } =
-    useRegister();
+  const {
+    showPassword,
+    setShowPassword,
+    form,
+    handleChangeInputRegister,
+    mutation,
+  } = useRegister();
 
   return (
     <Flex
@@ -45,9 +48,9 @@ const Register = () => {
                 <FormLabel>Full Name</FormLabel>
                 <Input
                   type="text"
-                  name="fullname"
-                  onChange={handleChangeInputRegister}
+                  name="full_name"
                   value={form.full_name}
+                  onChange={handleChangeInputRegister}
                 />
               </FormControl>
             </HStack>
@@ -57,8 +60,8 @@ const Register = () => {
                 <Input
                   type="text"
                   name="username"
-                  onChange={handleChangeInputRegister}
                   value={form.username}
+                  onChange={handleChangeInputRegister}
                 />
               </FormControl>
             </HStack>
@@ -67,8 +70,8 @@ const Register = () => {
               <Input
                 type="email"
                 name="email"
-                onChange={handleChangeInputRegister}
                 value={form.email}
+                onChange={handleChangeInputRegister}
               />
             </FormControl>
             <FormControl id="password" isRequired>
@@ -77,12 +80,12 @@ const Register = () => {
                 <Input
                   type={showPassword ? "text" : "password"}
                   name="password"
-                  onChange={handleChangeInputRegister}
                   value={form.password}
+                  onChange={handleChangeInputRegister}
                 />
                 <InputRightElement h={"full"}>
                   <Button
-                    variant={"ghost"}
+                    variant={"solid"}
                     onClick={() =>
                       setShowPassword((showPassword) => !showPassword)
                     }
@@ -102,6 +105,7 @@ const Register = () => {
                   _hover={{
                     bg: "green.300",
                   }}
+                  onClick={() => mutation.mutate(form)}
                 >
                   Sign up
                 </Button>

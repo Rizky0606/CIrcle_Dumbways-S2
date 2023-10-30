@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Box, Image, Text, Divider } from "@chakra-ui/react";
 import { DataThreads } from "@/types/TypeThreads";
 import { AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
+import moment from "moment";
 
 type ThreadItemsApi = {
   api: DataThreads[] | null;
@@ -15,6 +16,26 @@ const ThreadItem: React.FC<ThreadItemsApi> = ({ api }) => {
   const handleLikedPost = () => {
     setIsLike(!isLike);
   };
+
+  const handleDateThread = () => {
+    const datePost = api?.forEach((item) => {
+      return item.created_at;
+    });
+
+    console.log(datePost);
+  };
+
+  // const handleDateTime = () => {
+  //   const datePost = api?.forEach((date) => {
+  //     return date.created_at;
+  //   });
+  //   const dateNow = new Date();
+  //   console.log(datePost);
+  // };
+
+  useEffect(() => {
+    handleDateThread();
+  }, []);
 
   return (
     <>
@@ -40,8 +61,8 @@ const ThreadItem: React.FC<ThreadItemsApi> = ({ api }) => {
               <Text ml="10px">{post.content}</Text>
               {post.image && (
                 <Image
-                  src={post.image}
-                  alt={post.content}
+                  src={post?.image}
+                  alt={post?.content}
                   borderRadius={"10px"}
                   m="10px 0 0 10px"
                 />

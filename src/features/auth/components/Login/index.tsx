@@ -24,76 +24,78 @@ const Login = () => {
   } = useLogin();
 
   return (
-    <Flex minH={"100vh"} align={"center"} bgColor={"#1d1d1d"} color="white">
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
-        <Stack align={"center"}>
-          <Heading fontSize={"4xl"} textAlign={"center"}>
-            Login
-          </Heading>
-          <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool features ✌️
-          </Text>
-        </Stack>
-        <Box w="500px" rounded={"lg"} bg={"#262626"} boxShadow={"lg"} p={8}>
-          <Stack spacing={4}>
-            <FormControl id="email" isRequired>
-              <FormLabel>Email or Username</FormLabel>
-              <Input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChangeInputLogin}
-              />
-            </FormControl>
-            <FormControl id="password" isRequired>
-              <FormLabel>Password</FormLabel>
-              <InputGroup>
+    <>
+      <Flex minH={"100vh"} align={"center"} bgColor={"#1d1d1d"} color="white">
+        <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+          <Stack align={"center"}>
+            <Heading fontSize={"4xl"} textAlign={"center"}>
+              Login
+            </Heading>
+            <Text fontSize={"lg"} color={"gray.600"}>
+              to enjoy all of our cool features ✌️
+            </Text>
+          </Stack>
+          <Box w="500px" rounded={"lg"} bg={"#262626"} boxShadow={"lg"} p={8}>
+            <Stack spacing={4}>
+              <FormControl id="email" isRequired>
+                <FormLabel>Email or Username</FormLabel>
                 <Input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={form.password}
+                  type="email"
+                  name="email"
+                  value={form.email}
                   onChange={handleChangeInputLogin}
                 />
-                <InputRightElement h={"full"}>
+              </FormControl>
+              <FormControl id="password" isRequired>
+                <FormLabel>Password</FormLabel>
+                <InputGroup>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={form.password}
+                    onChange={handleChangeInputLogin}
+                  />
+                  <InputRightElement h={"full"}>
+                    <Button
+                      variant={"solid"}
+                      onClick={() =>
+                        setShowPassword((showPassword) => !showPassword)
+                      }
+                    >
+                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+              <Link to="/">
+                <Stack spacing={10} pt={2}>
                   <Button
-                    variant={"solid"}
-                    onClick={() =>
-                      setShowPassword((showPassword) => !showPassword)
-                    }
+                    loadingText="Submitting"
+                    size="lg"
+                    bg={"green.500"}
+                    color={"white"}
+                    _hover={{
+                      bg: "green.300",
+                    }}
+                    onClick={handleLogin}
                   >
-                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    Login
                   </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-            <Link to="/">
-              <Stack spacing={10} pt={2}>
-                <Button
-                  loadingText="Submitting"
-                  size="lg"
-                  bg={"green.500"}
-                  color={"white"}
-                  _hover={{
-                    bg: "green.300",
-                  }}
-                  onClick={handleLogin}
-                >
-                  Login
-                </Button>
+                </Stack>
+              </Link>
+              <Stack pt={6}>
+                <Text align={"center"}>
+                  Don't have account?{" "}
+                  <Link to="/auth/register">
+                    <Text color={"blue.400"}>Register</Text>
+                  </Link>
+                </Text>
               </Stack>
-            </Link>
-            <Stack pt={6}>
-              <Text align={"center"}>
-                Don't have account?{" "}
-                <Link to="/auth/register">
-                  <Text color={"blue.400"}>Register</Text>
-                </Link>
-              </Text>
             </Stack>
-          </Stack>
-        </Box>
-      </Stack>
-    </Flex>
+          </Box>
+        </Stack>
+      </Flex>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate, Outlet } from "react-router-dom";
 import Home from "./pages/home";
 import DetailThreads from "./components/layouts/DetailThread/DetailThread";
 import Layout from "./components/layouts/Layout";
@@ -11,7 +11,8 @@ import { API, setAuthToken } from "./libs/api";
 import { AUTH_CHECK, AUTH_ERROR } from "./store/RootReducer";
 
 const App = () => {
-  const auth = useSelector((state: RootState) => state.auth);
+  // const auth = useSelector((state: RootState) => state.auth.username);
+  // console.log(auth);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
@@ -41,33 +42,36 @@ const App = () => {
 
   // Private Route
   const IsNotLogin = () => {
-    if (!auth.email) {
+    if (!localStorage.token) {
       return <Navigate to="/auth/login" />;
+      // return <Outlet />;
     } else {
       return <Layout />;
     }
   };
 
-  // const isLogin = () => {};
-
   return (
-    <div
-      style={{
-        backgroundColor: "#1d1d1d",
-        minHeight: "100dvh",
-      }}
-    >
+    <>
       {isLoading ? null : (
-        <Routes>
-          <Route path="/" element={<IsNotLogin />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/detail-thread/:id" element={<DetailThreads />} />
-          </Route>
-          <Route path="/auth/login" element={<Login />} />
-          <Route path="/auth/register" element={<Register />} />
-        </Routes>
+        <div
+          style={{
+            backgroundColor: "#1d1d1d",
+            minHeight: "100dvh",
+          }}
+        >
+          <Routes>
+            <Route path="/" element={<IsNotLogin />}>
+              <Route index element={<Home />} />
+              <Route path="/detail-thread/:id" element={<DetailThreads />} />
+              <Route path="/edit-proile/:id" />
+            </Route>
+
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/register" element={<Register />} />
+          </Routes>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

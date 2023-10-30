@@ -1,4 +1,5 @@
 // import React from "react";
+import { RootState } from "@/store/type/RootState";
 import {
   Card,
   CardBody,
@@ -9,10 +10,13 @@ import {
   Box,
   Button,
 } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 const Profile = () => {
+  const user = useSelector((state: RootState) => state.auth);
+
   return (
     <Box m="30px" position={"fixed"}>
-      <Card p="15px" bg="#262626" borderRadius="10px">
+      <Card p="15px" bg="#262626" borderRadius="10px" w="350px">
         <CardBody>
           <Box>
             <Heading size="md" mb="15px" color="white">
@@ -31,7 +35,7 @@ const Profile = () => {
               alignItems={"center"}
             >
               <Image
-                src="https://img.freepik.com/free-photo/portrait-happy-asian-woman-smiling-posing-confident-cross-arms-chest-standing-against-studio-background_1258-89269.jpg?w=826&t=st=1698051188~exp=1698051788~hmac=10400db0d23ceee19bb3261433d68317f095bb191eb9af5a853a6e9f049b794b"
+                src={user.photo_profile}
                 borderRadius="50%"
                 width="50px"
                 height="50px"
@@ -49,10 +53,10 @@ const Profile = () => {
             </Box>
           </Box>
           <Stack mt="3" spacing="0">
-            <Text color="white">Stella Audhina</Text>
-            <Text color={"#6F6F6F"}>@audhinafa</Text>
+            <Text color="white">{user.full_name}</Text>
+            <Text color={"#6F6F6F"}>{user.username}</Text>
             <Text color="white" fontSize="15px">
-              picked over by the worms, and weird fishes
+              {/* {user.bio} */}
             </Text>
           </Stack>
         </CardBody>

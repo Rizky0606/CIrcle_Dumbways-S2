@@ -1,4 +1,5 @@
 // import React from "react";
+import { AUTH_LOGOUT } from "@/store/RootReducer";
 import {
   SimpleGrid,
   Box,
@@ -12,9 +13,17 @@ import { BiHomeAlt, BiSearchAlt2 } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { FiLogIn } from "react-icons/fi";
 import { PiSignOutBold } from "react-icons/pi";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 const SideLeft = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(AUTH_LOGOUT());
+    navigate("/auth/login");
+  };
+
   return (
     <Box position={"fixed"} top="0">
       <SimpleGrid p={5}>
@@ -111,7 +120,7 @@ const SideLeft = () => {
         </Button>
 
         <UnorderedList mt="60px">
-          <Link to="/auth/login">
+          {/* <Link to="/auth/login">
             <Box
               display={"flex"}
               alignItems={"center"}
@@ -147,26 +156,25 @@ const SideLeft = () => {
               <PiSignOutBold size="20px" />
               <ListItem style={{ marginLeft: "10px" }}>Register</ListItem>
             </Box>
-          </Link>
-
-          {/* <Link to="/register">
-            <Box
-              display={"flex"}
-              alignItems={"center"}
-              py="20px"
-              px="10px"
-              _hover={{
-                bg: "white",
-                color: "black",
-                borderRadius: "10px",
-                alignItems: "center",
-                cursor: "pointer",
-              }}
-            >
-              <PiSignOutBold size="20px" />
-              <ListItem style={{ marginLeft: "10px" }}>Logout</ListItem>
-            </Box>
           </Link> */}
+
+          <Box
+            display={"flex"}
+            alignItems={"center"}
+            py="20px"
+            px="10px"
+            _hover={{
+              bg: "white",
+              color: "black",
+              borderRadius: "10px",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
+            onClick={() => handleLogout()}
+          >
+            <PiSignOutBold size="20px" />
+            <ListItem style={{ marginLeft: "10px" }}>Logout</ListItem>
+          </Box>
         </UnorderedList>
       </SimpleGrid>
     </Box>

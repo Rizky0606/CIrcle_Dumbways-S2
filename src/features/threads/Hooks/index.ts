@@ -1,12 +1,11 @@
 import { API } from "@/libs/api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 type FormThread = {
   content: string;
-  image: string;
-  userId: number;
+  image: Blob | MediaSource | string;
 };
 type FormReply = {
   content: string;
@@ -30,33 +29,70 @@ export const postThreads = () => {
   const [keyword, setKeyword] = useState<FormThread>({
     content: "",
     image: "",
-    userId: 2,
   });
 
   const QueryClient = useQueryClient();
 
-  const mutation = useMutation({
-    mutationFn: (newthread: FormThread) => {
-      return API.post("/thread", newthread);
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => {
+      const formData = new FormData();
+      formData.append("content", keyword.content);
+      formData.append("image", keyword.image as File);
+      return API.post("/thread", formData);
     },
     onSuccess() {
       QueryClient.invalidateQueries({ queryKey: ["threads"] });
       setKeyword({
         content: "",
         image: "",
-        userId: 2,
       });
     },
   });
 
+  // const mutation = useMutation({
+  //   mutationFn: (postThread) => {
+  //     return API.post("/thread", postThread);
+  //   },
+  // });
+
+  // const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const formData = new FormData();
+  //   formData.append("content", keyword.content);
+  //   formData.append("image", keyword.image as File);
+  //   mutation.mutate(formData);
+  // };
+
   const handleChangeInputThread = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword({
-      ...keyword,
-      [e.target.name]: e.target.value,
-    });
+    const { name, files, value } = e.target;
+    if (files) {
+      setKeyword({
+        ...keyword,
+        [name]: files[0],
+      });
+    } else {
+      setKeyword({
+        ...keyword,
+        [name]: value,
+      });
+    }
   };
 
-  return { keyword, mutation, handleChangeInputThread };
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleButtonCLick = () => {
+    fileInputRef.current?.click();
+  };
+
+  return {
+    keyword,
+    // handlePostThreads,
+    mutate,
+    isPending,
+    // onSubmit,
+    handleChangeInputThread,
+    handleButtonCLick,
+  };
 };
 
 export const useDetailThreads = () => {
