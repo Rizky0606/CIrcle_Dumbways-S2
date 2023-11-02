@@ -4,11 +4,14 @@ import DetailThreads from "./components/layouts/DetailThread/DetailThread";
 import Layout from "./components/layouts/Layout";
 import Login from "./features/auth/components/Login";
 import Register from "./features/auth/components/Register";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "./store/type/RootState";
+import { useDispatch } from "react-redux";
+// import { RootState } from "./store/type/RootState";
 import { useEffect, useState } from "react";
 import { API, setAuthToken } from "./libs/api";
 import { AUTH_CHECK, AUTH_ERROR } from "./store/RootReducer";
+import Profile from "./pages/Profile/Profile";
+import SearchUser from "./pages/SearchUser/SearchUser";
+import DetailProfile from "./pages/DetailProfile/DetailProfile";
 
 const App = () => {
   // const auth = useSelector((state: RootState) => state.auth.username);
@@ -50,6 +53,14 @@ const App = () => {
     }
   };
 
+  const IsLogin = () => {
+    if (localStorage.token) {
+      return <Navigate to="/" />;
+    } else {
+      return <Outlet />;
+    }
+  };
+
   return (
     <>
       {isLoading ? null : (
@@ -63,11 +74,16 @@ const App = () => {
             <Route path="/" element={<IsNotLogin />}>
               <Route index element={<Home />} />
               <Route path="/detail-thread/:id" element={<DetailThreads />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/edit-proile/:id" />
+              <Route path="/search" element={<SearchUser />} />
+              <Route path="/detail-profile/:id" element={<DetailProfile />} />
             </Route>
 
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/register" element={<Register />} />
+            <Route element={<IsLogin />}>
+              <Route path="/auth/login" element={<Login />} />
+              <Route path="/auth/register" element={<Register />} />
+            </Route>
           </Routes>
         </div>
       )}

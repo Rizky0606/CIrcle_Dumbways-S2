@@ -4,6 +4,7 @@ export type DataThreads = {
   content: string;
   image: string;
   userId: {
+    id: number;
     full_name: string;
     username: string;
     photo_profile: string;
@@ -11,6 +12,11 @@ export type DataThreads = {
   likes: [
     {
       id: number;
+      userId: {
+        id: number;
+        email: string;
+        username: string;
+      };
     }
   ];
   replies: [

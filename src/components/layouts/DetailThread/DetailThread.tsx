@@ -1,7 +1,5 @@
 // import React from 'react'
-import { Container, Box, Grid, GridItem } from "@chakra-ui/react";
-import SideLeft from "@/components/SideLeft/SideLeft";
-import SideRight from "@/components/layouts/SideRight/SideRight";
+import { Container, Box } from "@chakra-ui/react";
 import DetailThread from "@/pages/detailThreads";
 
 const DetailThreads = () => {

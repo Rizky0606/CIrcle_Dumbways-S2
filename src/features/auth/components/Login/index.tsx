@@ -43,7 +43,11 @@ const Login = () => {
                   type="email"
                   name="email"
                   value={form.email}
+                  isRequired={true}
                   onChange={handleChangeInputLogin}
+                  onKeyDown={(e) => {
+                    e.key === "Enter" ? handleLogin() : <></>;
+                  }}
                 />
               </FormControl>
               <FormControl id="password" isRequired>
@@ -53,7 +57,11 @@ const Login = () => {
                     type={showPassword ? "text" : "password"}
                     name="password"
                     value={form.password}
+                    isRequired={true}
                     onChange={handleChangeInputLogin}
+                    onKeyDown={(e) => {
+                      e.key === "Enter" ? handleLogin() : <></>;
+                    }}
                   />
                   <InputRightElement h={"full"}>
                     <Button

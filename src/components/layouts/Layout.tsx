@@ -12,7 +12,7 @@ const Layout = () => {
           <GridItem w="200px">
             <SideLeft />
           </GridItem>
-          <GridItem w="100%">
+          <GridItem>
             <Outlet />
           </GridItem>
           <GridItem w="100%">

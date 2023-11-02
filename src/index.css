@@ -2,16 +2,17 @@ body {
   background-color: "#1d1d1d";
 }
 
-body::-webkit-scrollbar {
+.scroll::-webkit-scrollbar {
   width: 12px;
+  display: none;
 }
 
-body::-webkit-scrollbar-track {
+.scroll::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #262626;
 }
 
-body::-webkit-scrollbar-thumb {
+.scroll::-webkit-scrollbar-thumb {
   background-color: rgb(102, 102, 102);
   outline: 1px solid #262626;
   border-radius: 10px;

@@ -2,6 +2,7 @@ import { API } from "@/libs/api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useToast } from "@chakra-ui/react";
 
 type FormThread = {
   content: string;
@@ -10,7 +11,6 @@ type FormThread = {
 type FormReply = {
   content: string;
   image?: string;
-  userId: number;
   threadsId: number;
 };
 
@@ -21,6 +21,7 @@ export const useThreads = () => {
       const { data } = await API.get("/threads");
       return data;
     },
+    refetchInterval: 1000,
   });
   return { threads };
 };
@@ -31,6 +32,7 @@ export const postThreads = () => {
     image: "",
   });
 
+  const toast = useToast();
   const QueryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
@@ -46,22 +48,14 @@ export const postThreads = () => {
         content: "",
         image: "",
       });
+      toast({
+        title: "Success created thread",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     },
   });
-
-  // const mutation = useMutation({
-  //   mutationFn: (postThread) => {
-  //     return API.post("/thread", postThread);
-  //   },
-  // });
-
-  // const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const formData = new FormData();
-  //   formData.append("content", keyword.content);
-  //   formData.append("image", keyword.image as File);
-  //   mutation.mutate(formData);
-  // };
 
   const handleChangeInputThread = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files, value } = e.target;
@@ -86,10 +80,8 @@ export const postThreads = () => {
 
   return {
     keyword,
-    // handlePostThreads,
     mutate,
     isPending,
-    // onSubmit,
     handleChangeInputThread,
     handleButtonCLick,
   };
@@ -98,7 +90,6 @@ export const postThreads = () => {
 export const useDetailThreads = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [isLike, setIsLike] = useState<boolean>(false);
   const { data: detailThreads, isLoading } = useQuery({
     queryKey: ["detailThreads", params.id],
     queryFn: async () => {
@@ -106,12 +97,12 @@ export const useDetailThreads = () => {
 
       return data;
     },
+    refetchInterval: 1000,
   });
 
   const [keyword, setKeyword] = useState<FormReply>({
     content: "",
     image: "",
-    userId: 2,
     threadsId: Number(params.id),
   });
 
@@ -125,10 +116,7 @@ export const useDetailThreads = () => {
       QueryClient.invalidateQueries({ queryKey: ["detailThreads", params.id] });
       setKeyword({
         content: "",
-        image: "",
         threadsId: Number(params.id),
-        userId: 2,
-        // likeId:
       });
     },
   });
@@ -140,18 +128,12 @@ export const useDetailThreads = () => {
     });
   };
 
-  const handleLikedPost = () => {
-    setIsLike(!isLike);
-  };
-
   return {
     keyword,
-    isLike,
     navigate,
     detailThreads,
     mutation,
     isLoading,
     handleChangeInputReplies,
-    handleLikedPost,
   };
 };

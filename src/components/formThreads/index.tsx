@@ -1,6 +1,8 @@
 import { Box, Image, Input, Button } from "@chakra-ui/react";
 import { BiSolidImageAdd } from "react-icons/bi";
 import { postThreads } from "@/features/threads/Hooks";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/type/RootState";
 const FormThreads = () => {
   const {
     keyword,
@@ -9,6 +11,8 @@ const FormThreads = () => {
     isPending,
     handleChangeInputThread,
   } = postThreads();
+
+  const user = useSelector((state: RootState) => state.auth);
 
   return (
     <div>
@@ -27,8 +31,8 @@ const FormThreads = () => {
             height="30px"
             borderRadius={"full"}
             objectFit="cover"
-            src="https://bit.ly/dan-abramov"
-            alt="Dan Abramov"
+            src={user.photo_profile}
+            alt={user.full_name}
           />
           <Input
             name="content"

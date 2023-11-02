@@ -52,7 +52,9 @@ const SideLeft = () => {
               >
                 <BiHomeAlt size="20px" />
                 <ListItem style={{ marginLeft: "10px" }}>
-                  <Text size="xl">Home</Text>
+                  <Text size="xl" fontWeight={"semibold"}>
+                    Home
+                  </Text>
                 </ListItem>
               </Box>
             </Link>
@@ -72,7 +74,9 @@ const SideLeft = () => {
                 }}
               >
                 <BiSearchAlt2 size="20px" />
-                <ListItem style={{ marginLeft: "10px" }}>Search</ListItem>
+                <ListItem style={{ marginLeft: "10px" }}>
+                  <Text fontWeight={"semibold"}>Search</Text>
+                </ListItem>
               </Box>
             </Link>
 
@@ -91,7 +95,9 @@ const SideLeft = () => {
                 }}
               >
                 <AiOutlineHeart size="20px" />
-                <ListItem style={{ marginLeft: "10px" }}>Follow</ListItem>
+                <ListItem style={{ marginLeft: "10px" }}>
+                  <Text fontWeight={"semibold"}>Follow</Text>
+                </ListItem>
               </Box>
             </Link>
 
@@ -110,7 +116,9 @@ const SideLeft = () => {
                 }}
               >
                 <CgProfile size="20px" />
-                <ListItem style={{ marginLeft: "10px" }}>Profile</ListItem>
+                <ListItem style={{ marginLeft: "10px" }}>
+                  <Text fontWeight={"semibold"}>Profile</Text>
+                </ListItem>
               </Box>
             </Link>
           </UnorderedList>
@@ -120,52 +128,14 @@ const SideLeft = () => {
         </Button>
 
         <UnorderedList mt="60px">
-          {/* <Link to="/auth/login">
-            <Box
-              display={"flex"}
-              alignItems={"center"}
-              py="20px"
-              px="10px"
-              _hover={{
-                bg: "white",
-                color: "black",
-                borderRadius: "10px",
-                alignItems: "center",
-                cursor: "pointer",
-              }}
-            >
-              <FiLogIn size="20px" />
-              <ListItem style={{ marginLeft: "10px" }}>Login</ListItem>
-            </Box>
-          </Link>
-
-          <Link to="/auth/register">
-            <Box
-              display={"flex"}
-              alignItems={"center"}
-              py="20px"
-              px="10px"
-              _hover={{
-                bg: "white",
-                color: "black",
-                borderRadius: "10px",
-                alignItems: "center",
-                cursor: "pointer",
-              }}
-            >
-              <PiSignOutBold size="20px" />
-              <ListItem style={{ marginLeft: "10px" }}>Register</ListItem>
-            </Box>
-          </Link> */}
-
           <Box
             display={"flex"}
             alignItems={"center"}
             py="20px"
             px="10px"
             _hover={{
-              bg: "white",
-              color: "black",
+              bg: "red",
+              color: "white",
               borderRadius: "10px",
               alignItems: "center",
               cursor: "pointer",
@@ -173,7 +143,9 @@ const SideLeft = () => {
             onClick={() => handleLogout()}
           >
             <PiSignOutBold size="20px" />
-            <ListItem style={{ marginLeft: "10px" }}>Logout</ListItem>
+            <ListItem style={{ marginLeft: "10px" }}>
+              <Text fontWeight={"semibold"}>Logout</Text>
+            </ListItem>
           </Box>
         </UnorderedList>
       </SimpleGrid>

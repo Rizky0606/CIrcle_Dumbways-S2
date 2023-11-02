@@ -1,29 +1,44 @@
-import { Link } from "react-router-dom";
 import { Box, Image, Text, Spinner, Input, Button } from "@chakra-ui/react";
 import { AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { IoIosArrowBack } from "react-icons/io";
-import { BiSolidImageAdd } from "react-icons/bi";
 import { useDetailThreads } from "@/features/threads/Hooks";
+import { handleDateThread } from "@/utils/convertTime";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/type/RootState";
+import { useMutation } from "@tanstack/react-query";
+import { API } from "@/libs/api";
 
 const DetailThread = () => {
   const {
     keyword,
-    isLike,
     navigate,
     detailThreads,
     mutation,
     isLoading,
     handleChangeInputReplies,
-    handleLikedPost,
   } = useDetailThreads();
+
+  const user = useSelector((state: RootState) => state.auth);
+  const userId = user.id;
+  const threadsId = detailThreads?.id;
+
+  const isLiked = detailThreads?.likes.some(
+    (like: any) => like.userId.id === userId
+  );
+
+  const postLiked = useMutation({
+    mutationFn: (like) => {
+      return API.post(`/thread/${threadsId}/like`, like);
+    },
+  });
 
   return (
     <>
       {isLoading ? (
         <Spinner />
       ) : (
-        <Box mt="20px" minH={"100vh"}>
+        <Box mt="20px" minH={"100vh"} className="scroll">
           <Box display={"flex"} alignItems={"center"} my="20px">
             <Box
               _hover={{
@@ -57,7 +72,7 @@ const DetailThread = () => {
                 <Text color={"#6F6F6F"} mr="10px" ml="10px">
                   {detailThreads?.userId.username}
                 </Text>
-                <Text>{detailThreads?.created_at}</Text>
+                <Text>{handleDateThread(detailThreads?.created_at)}</Text>
               </Box>
               <Text ml="10px">{detailThreads?.content}</Text>
               <Image
@@ -69,29 +84,25 @@ const DetailThread = () => {
               <Box display={"flex"} m="10px 0 0 10px" alignItems={"center"}>
                 <Box display={"flex"} alignItems={"center"}>
                   <Box
-                    onClick={handleLikedPost}
+                    onClick={() => postLiked.mutate()}
                     display={"flex"}
                     alignItems={"center"}
                     cursor={"pointer"}
+                    color={isLiked ? "red" : "white"}
                   >
-                    <AiFillHeart color={isLike ? "red" : ""} />
+                    <AiFillHeart size="25px" color={isLiked ? "red" : ""} />
                     <h2 style={{ margin: "0 5px 0 5px" }}>
                       {detailThreads?.likes.length}
                     </h2>
                   </Box>
                 </Box>
-                <Link
-                  to={`/detail-thread/${detailThreads?.id}`}
-                  key={detailThreads?.id}
-                >
-                  <Box display={"flex"} alignItems={"center"} ml="15px">
-                    <BiCommentDetail />
-                    <h2 style={{ marginLeft: "5px" }}>
-                      {detailThreads.replies.length}
-                      <span style={{ marginLeft: "5px" }}>replies</span>
-                    </h2>
-                  </Box>
-                </Link>
+                <Box display={"flex"} alignItems={"center"} ml="15px">
+                  <BiCommentDetail size="25px" />
+                  <h2 style={{ marginLeft: "5px" }}>
+                    {detailThreads.replies.length}
+                    <span style={{ marginLeft: "5px" }}>replies</span>
+                  </h2>
+                </Box>
               </Box>
             </Box>
           </Box>
@@ -106,15 +117,15 @@ const DetailThread = () => {
                 height="30px"
                 borderRadius={"full"}
                 objectFit="cover"
-                src="https://bit.ly/dan-abramov"
-                alt="Dan Abramov"
+                src={user.photo_profile}
+                alt={user.full_name}
               />
               <Input
                 name="content"
                 value={keyword.content}
                 onChange={handleChangeInputReplies}
-                placeholder="What is Happening ?!"
                 bg={"transparent"}
+                placeholder="Replies Thread"
                 color={"gray.300"}
                 width="80%"
                 mx="20px"
@@ -123,21 +134,7 @@ const DetailThread = () => {
                 // borderRadius="7px"
                 variant={"flushed"}
               />
-              <Input
-                name="image"
-                value={keyword.image}
-                onChange={handleChangeInputReplies}
-                placeholder="What is Happening ?!"
-                bg={"transparent"}
-                color={"gray.300"}
-                width="80%"
-                mx="20px"
-                pl="10px"
-                // height={"35px"}
-                // borderRadius="7px"
-                variant={"flushed"}
-              />
-              <BiSolidImageAdd size="35px" style={{ marginRight: "10px" }} />
+
               <Button
                 colorScheme="whatsapp"
                 // bg="green"
@@ -154,69 +151,80 @@ const DetailThread = () => {
 
           {/* Replies */}
           <Box mb="30px">
-            {detailThreads.replies?.map((reply: any) => (
-              <Box mt="50px" key={reply.id}>
-                <Box color={"white"} display={"flex"} mt="20px">
-                  <Image
-                    src={reply.userId.photo_profile}
-                    width={"30px"}
-                    height={"30px"}
-                    borderRadius={"full"}
-                  />
-                  <Box>
-                    <Box display={"flex"}>
-                      <h2 style={{ marginLeft: "10px", fontWeight: "bold" }}>
-                        {reply.userId.full_name}
-                      </h2>
-                      <Text color={"#6F6F6F"} mr="10px" ml="10px">
-                        {reply.userId.username}
-                      </Text>
-                      <Text>{reply.created_at}</Text>
-                    </Box>
-                    <Text ml="10px">{reply.content}</Text>
-                    {reply.image && (
+            {detailThreads?.replies.length === 0 ? (
+              <Text
+                align="center"
+                mt="150px"
+                fontWeight={"semibold"}
+                fontSize={"30px"}
+                color="whiteAlpha.300"
+              >
+                Replies Not Found
+              </Text>
+            ) : (
+              <>
+                {detailThreads.replies?.map((reply: any) => (
+                  <Box mt="50px" key={reply.id}>
+                    <Box color={"white"} display={"flex"} mt="20px">
                       <Image
-                        src={reply.image}
-                        alt={reply.content}
-                        borderRadius={"10px"}
-                        m="10px 0 0 10px"
+                        src={reply.userId.photo_profile}
+                        width={"30px"}
+                        height={"30px"}
+                        borderRadius={"full"}
                       />
-                    )}
-                    <Box
-                      display={"flex"}
-                      m="10px 0 0 10px"
-                      alignItems={"center"}
-                    >
-                      <Box display={"flex"} alignItems={"center"}>
-                        <Box
-                          onClick={handleLikedPost}
-                          display={"flex"}
-                          alignItems={"center"}
-                          cursor={"pointer"}
-                        >
-                          <AiFillHeart color={isLike ? "red" : ""} />
-                          <h2 style={{ margin: "0 5px 0 5px" }}>
-                            {detailThreads.likes && detailThreads?.likes.length}
+                      <Box>
+                        <Box display={"flex"}>
+                          <h2
+                            style={{ marginLeft: "10px", fontWeight: "bold" }}
+                          >
+                            {reply.userId.full_name}
                           </h2>
+                          <Text color={"#6F6F6F"} mr="10px" ml="10px">
+                            {reply.userId.username}
+                          </Text>
+                          <Text>{handleDateThread(reply.created_at)}</Text>
+                        </Box>
+                        <Text ml="10px">{reply.content}</Text>
+                        {reply.image && (
+                          <Image
+                            src={reply.image}
+                            alt={reply.content}
+                            borderRadius={"10px"}
+                            m="10px 0 0 10px"
+                          />
+                        )}
+                        <Box
+                          display={"flex"}
+                          m="10px 0 0 10px"
+                          alignItems={"center"}
+                        >
+                          <Box display={"flex"} alignItems={"center"}>
+                            <Box
+                              display={"flex"}
+                              alignItems={"center"}
+                              cursor={"pointer"}
+                            >
+                              <AiFillHeart size="25px" />
+                              <h2 style={{ margin: "0 5px 0 5px" }}>
+                                {detailThreads.likes &&
+                                  detailThreads?.likes.length}
+                              </h2>
+                            </Box>
+                          </Box>
+                          <Box display={"flex"} alignItems={"center"} ml="15px">
+                            <BiCommentDetail size="25px" />
+                            <h2 style={{ marginLeft: "5px" }}>
+                              {detailThreads.replies.length}
+                              <span style={{ marginLeft: "5px" }}>replies</span>
+                            </h2>
+                          </Box>
                         </Box>
                       </Box>
-                      <Link
-                        to={`/detail-thread/${detailThreads?.id}`}
-                        key={detailThreads?.id}
-                      >
-                        <Box display={"flex"} alignItems={"center"} ml="15px">
-                          <BiCommentDetail />
-                          <h2 style={{ marginLeft: "5px" }}>
-                            {detailThreads.replies.length}
-                            <span style={{ marginLeft: "5px" }}>replies</span>
-                          </h2>
-                        </Box>
-                      </Link>
                     </Box>
                   </Box>
-                </Box>
-              </Box>
-            ))}
+                ))}
+              </>
+            )}
           </Box>
           {/* End Replies */}
         </Box>

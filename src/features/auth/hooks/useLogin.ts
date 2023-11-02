@@ -4,9 +4,11 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { API } from "@/libs/api";
 import { AUTH_LOGIN } from "@/store/RootReducer";
+import { useToast } from "@chakra-ui/react";
 export const useLogin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const toast = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState<LoginUser>({
     email: "",
@@ -20,6 +22,13 @@ export const useLogin = () => {
       navigate("/");
     } catch (error) {
       console.log(error);
+      toast({
+        title: "Failed",
+        description: "Email or password is incorrect",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   }
   const handleChangeInputLogin = (e: React.ChangeEvent<HTMLInputElement>) => {

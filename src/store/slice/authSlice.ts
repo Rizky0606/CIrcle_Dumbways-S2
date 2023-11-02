@@ -8,6 +8,7 @@ const initialState: TypeUser = {
   username: "",
   email: "",
   photo_profile: "",
+  bio: "",
 };
 
 export const authSlice = createSlice({
@@ -20,12 +21,15 @@ export const authSlice = createSlice({
 
       localStorage.setItem("token", payload.token);
 
-      const user: TypeUser = {
-        id: payload.id,
-        full_name: payload.full_name,
-        username: payload.username,
-        email: payload.email,
-        photo_profile: payload.photo_profile,
+      const user: any = {
+        id: payload.user.id,
+        full_name: payload.user.full_name,
+        username: payload.user.username,
+        email: payload.user.email,
+        photo_profile: payload.user.photo_profile,
+        bio: payload.user.bio,
+        following: payload.user.following,
+        followers: payload.user.followers,
       };
       return user;
     },
@@ -33,12 +37,13 @@ export const authSlice = createSlice({
     AUTH_CHECK: (_, action) => {
       const payload = action.payload;
 
-      const user: TypeUser = {
+      const user: any = {
         id: payload.id,
         full_name: payload.full_name,
         username: payload.username,
         email: payload.email,
         photo_profile: payload.photo_profile,
+        bio: payload.bio,
       };
       return user;
     },

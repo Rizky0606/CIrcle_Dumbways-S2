@@ -1,2 +1,2 @@
 export * from "./SideLeft";
-export * from "./Profile";
+export * from "../pages/Profile";

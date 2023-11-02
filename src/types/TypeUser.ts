@@ -4,4 +4,5 @@ export type TypeUser = {
   username: string;
   email: string;
   photo_profile: string;
+  bio: string;
 };
