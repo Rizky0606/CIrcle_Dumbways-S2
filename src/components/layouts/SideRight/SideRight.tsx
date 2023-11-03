@@ -8,20 +8,14 @@ import {
   Stack,
   Text,
   Image,
-  StackDivider,
   Button,
+  // Spinner,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/type/RootState";
 import { API } from "@/libs/api";
-import { useEffect, useState } from "react";
-
-type DataUser = {
-  id: number;
-  username: string;
-  full_name: string;
-  photo_profile: string;
-};
+import { useQuery } from "@tanstack/react-query";
+import SuggestFollow from "./SuggestFollow";
 
 const SideRight = () => {
   return (
@@ -44,7 +38,6 @@ export default SideRight;
 
 const Profile = () => {
   const user = useSelector((state: RootState) => state.auth);
-  console.log(user);
 
   return (
     <Box m="20px" className="scroll">
@@ -55,8 +48,7 @@ const Profile = () => {
               My Profile
             </Heading>
             <Image
-              src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-              alt="Green double couch with wooden legs"
+              src="https://img.freepik.com/free-vector/gradient-abstract-purple-color-background-design_343694-2875.jpg?w=900&t=st=1698981151~exp=1698981751~hmac=ab3b1aed9c3c7af91ff29d3e9a410b9eece848ed692376a3e9f5e1bbad65cd28"
               borderRadius="lg"
               height="100px"
               width="100%"
@@ -93,16 +85,16 @@ const Profile = () => {
           </Stack>
         </CardBody>
         <Box display="flex" justifyContent={"space-evenly"} mt="5px">
-          <Heading display="flex" size="sm" color="white">
-            291
-            <Text ml={2} color={"#6F6F6F"} size="sm">
-              Following
-            </Text>
-          </Heading>
           <Heading display="flex" ml={5} size="sm" color="white">
-            23
+            {/* {user.follower.length} */}
             <Text ml={2} color={"#6F6F6F"} size="sm">
               Followers
+            </Text>
+          </Heading>
+          <Heading display="flex" size="sm" color="white">
+            {/* {user.following.length} */}
+            <Text ml={2} color={"#6F6F6F"} size="sm">
+              Following
             </Text>
           </Heading>
         </Box>
@@ -112,56 +104,35 @@ const Profile = () => {
 };
 
 const SuggestedFollow = () => {
-  const [data, setData] = useState<DataUser[]>();
-  const fetchDataUser = async () => {
-    const response = await API.get("/users");
-    setData(response.data);
-  };
+  const { data: user } = useQuery({
+    queryKey: ["suggesFollow"],
+    queryFn: async () => {
+      const { data } = await API.get("/users");
 
-  useEffect(() => {
-    fetchDataUser();
-  }, []);
+      return data;
+    },
+    refetchInterval: 1000,
+  });
 
   return (
-    <Card m="25px" bg="#262626" color="white">
-      <CardHeader>
-        <Heading size="md">Suggested for you</Heading>
-      </CardHeader>
-
-      <CardBody>
-        <Stack divider={<StackDivider />} spacing="4">
-          {data?.map((user) => {
-            return (
-              <Box
-                display="flex"
-                width="100%"
-                alignItems={"center"}
-                key={user.id}
-                justifyContent={"space-between"}
-              >
-                <Image
-                  src={user.photo_profile}
-                  rounded="full"
-                  w="30px"
-                  h="30px"
-                />
-                <Box p="10px" display={"flex"} flexDirection={"column"}>
-                  <Text>{user.full_name}</Text>
-                  <Text>@{user.username}</Text>
-                </Box>
-                <Button
-                  variant={"outline"}
-                  color="white"
-                  _hover={{ color: "black", bgColor: "white" }}
-                >
-                  Follow
-                </Button>
-              </Box>
-            );
-          })}
-        </Stack>
-      </CardBody>
-    </Card>
+    <>
+      <Card m="25px" bg="#262626" color="white">
+        <CardHeader>
+          <Heading fontSize="25px">Suggested for you</Heading>
+        </CardHeader>
+        <CardBody>
+          <Stack spacing="2">
+            {user?.map((data: any) => {
+              return (
+                <div key={data.id}>
+                  <SuggestFollow item={data} />
+                </div>
+              );
+            })}
+          </Stack>
+        </CardBody>
+      </Card>
+    </>
   );
 };
 

@@ -18,6 +18,8 @@ export const useLogin = () => {
   async function handleLogin() {
     try {
       const response = await API.post("/auth/login", form);
+      console.log(response);
+
       dispatch(AUTH_LOGIN(response?.data));
       navigate("/");
     } catch (error) {

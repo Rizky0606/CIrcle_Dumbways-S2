@@ -12,11 +12,9 @@ import { AUTH_CHECK, AUTH_ERROR } from "./store/RootReducer";
 import Profile from "./pages/Profile/Profile";
 import SearchUser from "./pages/SearchUser/SearchUser";
 import DetailProfile from "./pages/DetailProfile/DetailProfile";
+import Follow from "./pages/Follow/Follow";
 
 const App = () => {
-  // const auth = useSelector((state: RootState) => state.auth.username);
-  // console.log(auth);
-
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,8 +22,9 @@ const App = () => {
   const authCheck = async () => {
     try {
       setAuthToken(localStorage.token);
-      const response = await API.get("/auth/check");
-      dispatch(AUTH_CHECK(response.data.user));
+      const response = await API.get("/user/profile");
+
+      dispatch(AUTH_CHECK(response.data.data));
       setIsLoading(false);
     } catch (error) {
       dispatch(AUTH_ERROR());
@@ -75,6 +74,7 @@ const App = () => {
               <Route index element={<Home />} />
               <Route path="/detail-thread/:id" element={<DetailThreads />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/follow" element={<Follow />} />
               <Route path="/edit-proile/:id" />
               <Route path="/search" element={<SearchUser />} />
               <Route path="/detail-profile/:id" element={<DetailProfile />} />
