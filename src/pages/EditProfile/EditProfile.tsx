@@ -13,7 +13,6 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
-import { useQuery } from "@tanstack/react-query";
 import { API } from "@/libs/api";
 
 const EditProfile = () => {
