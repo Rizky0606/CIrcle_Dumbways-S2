@@ -1,6 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Image, Text, Divider } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  Text,
+  Divider,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button,
+} from "@chakra-ui/react";
 import { DataThreads } from "@/types/TypeThreads";
 import { AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
@@ -10,6 +20,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/type/RootState";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 const ThreadItem: React.FC<DataThreads> = (props) => {
   const user = useSelector((state: RootState) => state.auth);
@@ -41,6 +52,28 @@ const ThreadItem: React.FC<DataThreads> = (props) => {
       }
     },
   });
+
+  const deleteThread = useMutation({
+    mutationFn: () => {
+      return API.delete(`/thread/${props.id}`);
+    },
+    onSuccess() {
+      toast({
+        title: "Success remove thread",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    },
+    onError() {
+      toast({
+        title: "Remove thread failed",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    },
+  });
   return (
     <>
       <div key={props.id}>
@@ -53,23 +86,36 @@ const ThreadItem: React.FC<DataThreads> = (props) => {
             borderRadius={"full"}
           />
           <Box w="100%">
-            <Box alignItems={"center"} display="flex">
-              <Text
-                style={{
-                  marginLeft: "10px",
-                  fontWeight: "bold",
-                  fontSize: "20px",
-                }}
-              >
-                {props.userId.full_name}
-              </Text>
+            <Box display="flex" justifyContent={"space-between"}>
+              <Box alignItems={"center"} display="flex">
+                <Text
+                  style={{
+                    marginLeft: "10px",
+                    fontWeight: "bold",
+                    fontSize: "20px",
+                  }}
+                >
+                  {props.userId.full_name}
+                </Text>
 
-              <Text fontSize={"30px"} px="10px">
-                {" "}
-                -{" "}
-              </Text>
+                <Text fontSize={"30px"} px="10px">
+                  {" "}
+                  -{" "}
+                </Text>
 
-              <Text>{handleDateThread(props.created_at)}</Text>
+                <Text>{handleDateThread(props.created_at)}</Text>
+              </Box>
+              <Menu>
+                <MenuButton as={Button} bg="transparent" color="green">
+                  <ChevronDownIcon fontSize="30px" />
+                </MenuButton>
+                <MenuList bg="#262626">
+                  <MenuItem bg="#262626">Edit Threads</MenuItem>
+                  <MenuItem onClick={() => deleteThread.mutate()} bg="#262626">
+                    Delete Threads
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </Box>
             <Text color={"#6F6F6F"} mr="10px" ml="10px">
               {props.userId.username}

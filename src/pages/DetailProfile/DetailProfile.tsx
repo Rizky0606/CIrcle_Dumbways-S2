@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -15,12 +14,13 @@ import {
 } from "@chakra-ui/react";
 import { Link, useParams } from "react-router-dom";
 import { API } from "@/libs/api";
-// import { useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { handleDateThread } from "@/utils/convertTime";
 import { AiFillHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/type/RootState";
+import { useQuery } from "@tanstack/react-query";
 
 // type DataProfileUser = {
 //   full_name: string;
@@ -30,80 +30,74 @@ import { RootState } from "@/store/type/RootState";
 //   email: string;
 // };
 const DetailProfile = () => {
-  const [data, setData] = useState<any>();
   const params = useParams();
   const loginSession = useSelector((state: RootState) => state.auth);
 
-  const isFollow = data?.follower.some(
+  const { data: getData } = useQuery({
+    queryKey: ["getData"],
+    queryFn: async () => {
+      const response = await API.get(`/user/${params.id}`);
+      return response.data;
+    },
+    refetchInterval: 1000,
+  });
+
+  const isFollow = getData?.follower.some(
     (follow: any) => follow.id === loginSession.id
   );
 
-  const fetchUserProfile = async () => {
-    const response = await API.get(`/user/${params.id}`);
-    setData(response.data);
-  };
-
-  // const {data: getData} = useQuery({
-  //   queryKey: ["getData"],
-  //   queryFn: async() => {
-  //     const response = await API.get(`/user/${params.id}/follower`);
-  //     return response.data;
-  //   }
-  // })
-
-  // const mutation = useMutation({
-  //   mutationFn: async () => {
-  //     const response = await API.post(`/user/${params.id}/follow`);
-  //     return response.data;
-  //   },
-  // });
-
-  useEffect(() => {
-    fetchUserProfile();
-  }, []);
+  const mutation = useMutation({
+    mutationFn: async (followProfile) => {
+      return API.post(`/follow/${params.id}`, followProfile);
+    },
+  });
 
   return (
     <Box mt="50px">
       <Card bg="#262626" mt="40px" color="whiteAlpha.800" p="20px">
         <Box display="flex" alignItems={"center"}>
           <Image
-            src={data?.user?.photo_profile}
+            src={getData?.user?.photo_profile}
             boxSize="150px"
             objectFit="cover"
-            alt={data?.user?.full_name}
+            alt={getData?.user?.full_name}
             borderRadius="10px"
           />
           <Box>
             <Box mt="10px">
               <Box display="flex" justifyContent={"space-between"}>
                 <Text fontSize="20px" fontWeight={"bold"} ml="20px">
-                  {data?.user?.username}
+                  {getData?.user?.username}
                 </Text>
-                {isFollow ? <Button>Unfollow</Button> : <Button>Follow</Button>}
+                {isFollow ? (
+                  <Button onClick={() => mutation.mutate()}>Unfollow</Button>
+                ) : (
+                  <Button onClick={() => mutation.mutate()}>Follow</Button>
+                )}
               </Box>
             </Box>
             <Box mt="10px">
               <Text fontSize="25px" fontWeight={"bold"} ml="20px">
-                {data?.user?.full_name}
+                {getData?.user?.full_name}
               </Text>
             </Box>
             <Box mt="10px" display="flex">
               <Box display="flex" alignItems={"center"} mr="20px">
                 <Text fontSize="20px" fontWeight={"bold"} m="0 10px 0 20px">
-                  {data?.follower.length}
+                  {getData?.follower.length}
                 </Text>
                 <Text>Followers</Text>
               </Box>
               <Box display="flex" alignItems={"center"}>
                 <Text fontSize="20px" fontWeight={"bold"} m="0 10px 0 10px">
-                  {data?.following.length}
+                  {getData?.following.length}
                 </Text>
                 <Text>Following</Text>
               </Box>
             </Box>
             <Box mt="10px">
               <Text fontSize="17px" fontWeight={"bold"} ml="20px">
-                {data?.user?.bio}
+                {getData?.user?.bio}
               </Text>
             </Box>
           </Box>
@@ -119,14 +113,14 @@ const DetailProfile = () => {
 
           <TabPanels>
             <TabPanel>
-              {data?.user?.threads.length > 0 ? (
+              {getData?.user?.threads.length > 0 ? (
                 <>
-                  {data?.user?.threads.map((thread: any) => {
+                  {getData?.user?.threads.map((thread: any) => {
                     return (
                       <div key={thread.id}>
                         <Box color={"white"} display={"flex"} mt="20px">
                           <Image
-                            src={data?.user?.photo_profile}
+                            src={getData?.user?.photo_profile}
                             width={"30px"}
                             height={"30px"}
                             mt="5px"
@@ -141,7 +135,7 @@ const DetailProfile = () => {
                                   fontSize: "20px",
                                 }}
                               >
-                                {data.user?.full_name}
+                                {getData.user?.full_name}
                               </Text>
 
                               <Text fontSize={"30px"} px="10px">
@@ -152,7 +146,7 @@ const DetailProfile = () => {
                               <Text>{handleDateThread(thread.created_at)}</Text>
                             </Box>
                             <Text color={"#6F6F6F"} mr="10px" ml="10px">
-                              {data.user?.username}
+                              {getData.user?.username}
                             </Text>
                             <Text ml="10px">{thread.content}</Text>
                             {thread.image && (

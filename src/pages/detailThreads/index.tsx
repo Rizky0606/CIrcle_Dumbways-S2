@@ -75,12 +75,14 @@ const DetailThread = () => {
                 <Text>{handleDateThread(detailThreads?.created_at)}</Text>
               </Box>
               <Text ml="10px">{detailThreads?.content}</Text>
-              <Image
-                src={detailThreads?.image}
-                alt={detailThreads?.content}
-                borderRadius={"10px"}
-                m="10px 0 0 10px"
-              />
+              {detailThreads?.image && (
+                <Image
+                  src={detailThreads?.image}
+                  alt={detailThreads?.content}
+                  borderRadius={"10px"}
+                  m="10px 0 0 10px"
+                />
+              )}
               <Box display={"flex"} m="10px 0 0 10px" alignItems={"center"}>
                 <Box display={"flex"} alignItems={"center"}>
                   <Box

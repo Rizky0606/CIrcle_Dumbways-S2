@@ -35,12 +35,13 @@ const Follow = () => {
           {dataUser.map((user) => (
             <div key={user.id}>
               {user.id !== userId && (
-                <Box key={user.id}>
+                <Box key={user.id} w="100%">
                   <Link to={`/detail-profile/${user.id}`}>
                     <Box
                       display={"flex"}
                       flexDirection={"row"}
                       alignItems={"center"}
+                      justifyContent={"space-between"}
                       my="30px"
                     >
                       <Box>
@@ -53,18 +54,14 @@ const Follow = () => {
                           h="50px"
                         />
                       </Box>
-                      <Box
-                        ml="20px"
-                        display="grid"
-                        gridTemplateColumns={"1fr 1fr"}
-                      >
+                      <Box display="grid" gridTemplateColumns={"1fr"}>
                         <Box>
                           <Text>{user.full_name}</Text>
                           <Text>{user.username}</Text>
                         </Box>
-                        <Box>
-                          <Button>Follow</Button>
-                        </Box>
+                      </Box>
+                      <Box display="grid" gridTemplateColumns={"1fr"}>
+                        <Button>Follow</Button>
                       </Box>
                     </Box>
                   </Link>

@@ -13,6 +13,7 @@ import Profile from "./pages/Profile/Profile";
 import SearchUser from "./pages/SearchUser/SearchUser";
 import DetailProfile from "./pages/DetailProfile/DetailProfile";
 import Follow from "./pages/Follow/Follow";
+import EditProfile from "./pages/EditProfile/EditProfile";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -22,9 +23,9 @@ const App = () => {
   const authCheck = async () => {
     try {
       setAuthToken(localStorage.token);
-      const response = await API.get("/user/profile");
+      const response = await API.get("/auth/check");
 
-      dispatch(AUTH_CHECK(response.data.data));
+      dispatch(AUTH_CHECK(response.data.user));
       setIsLoading(false);
     } catch (error) {
       dispatch(AUTH_ERROR());
@@ -75,7 +76,7 @@ const App = () => {
               <Route path="/detail-thread/:id" element={<DetailThreads />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/follow" element={<Follow />} />
-              <Route path="/edit-proile/:id" />
+              <Route path="/edit-profile/:id" element={<EditProfile />} />
               <Route path="/search" element={<SearchUser />} />
               <Route path="/detail-profile/:id" element={<DetailProfile />} />
             </Route>

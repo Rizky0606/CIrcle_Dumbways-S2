@@ -11,11 +11,10 @@ import {
   Button,
   // Spinner,
 } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/type/RootState";
 import { API } from "@/libs/api";
 import { useQuery } from "@tanstack/react-query";
 import SuggestFollow from "./SuggestFollow";
+import { Link } from "react-router-dom";
 
 const SideRight = () => {
   return (
@@ -37,7 +36,15 @@ const SideRight = () => {
 export default SideRight;
 
 const Profile = () => {
-  const user = useSelector((state: RootState) => state.auth);
+  // const user = useSelector((state: RootState) => state.auth);
+  const { data: dataProfile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => {
+      const { data } = await API.get("/user/profile");
+      return data;
+    },
+    refetchInterval: 1000,
+  });
 
   return (
     <Box m="20px" className="scroll">
@@ -59,40 +66,42 @@ const Profile = () => {
               alignItems={"center"}
             >
               <Image
-                src={user.photo_profile}
+                src={dataProfile?.data?.photo_profile}
                 borderRadius="50%"
                 width="50px"
                 height="50px"
                 objectFit={"cover"}
               />
-              <Button
-                border="1px solid white"
-                borderRadius="10px"
-                margin="3px"
-                fontSize="12px"
-                height="30px"
-              >
-                Edit Profile
-              </Button>
+              <Link to={`/edit-profile/${dataProfile?.data?.id}`}>
+                <Button
+                  border="1px solid white"
+                  borderRadius="10px"
+                  margin="3px"
+                  fontSize="12px"
+                  height="30px"
+                >
+                  Edit Profile
+                </Button>
+              </Link>
             </Box>
           </Box>
           <Stack mt="3" spacing="0">
-            <Text color="white">{user.full_name}</Text>
-            <Text color={"#6F6F6F"}>{user.username}</Text>
+            <Text color="white">{dataProfile?.data?.full_name}</Text>
+            <Text color={"#6F6F6F"}>{dataProfile?.data?.username}</Text>
             <Text color="white" fontSize="15px">
-              {user.bio}
+              {dataProfile?.data?.bio}
             </Text>
           </Stack>
         </CardBody>
         <Box display="flex" justifyContent={"space-evenly"} mt="5px">
           <Heading display="flex" ml={5} size="sm" color="white">
-            {/* {user.follower.length} */}
+            {dataProfile?.follow?.follower.length}
             <Text ml={2} color={"#6F6F6F"} size="sm">
               Followers
             </Text>
           </Heading>
           <Heading display="flex" size="sm" color="white">
-            {/* {user.following.length} */}
+            {dataProfile?.follow?.following.length}
             <Text ml={2} color={"#6F6F6F"} size="sm">
               Following
             </Text>
